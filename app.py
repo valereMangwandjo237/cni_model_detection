@@ -5,6 +5,7 @@ import cv2
 import os
 import time
 from tensorflow.keras.models import load_model
+from tensorflow.keras.preprocessing import image
 
 # Configuration de la page
 st.set_page_config(
@@ -56,7 +57,7 @@ def detection_visage(img):
 
 
 
-def predict(image):
+def predict(img_path):
   class_names =  ['new_cni', 'old_cni', 'others', 'passport', 'recepisse']
   predicted_label = ""
   img = image.load_img(img_path, target_size=(224, 224))
