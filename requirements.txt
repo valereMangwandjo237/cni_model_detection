@@ -2,5 +2,5 @@ streamlit==1.32.2
 Pillow==10.1.0
 numpy==1.26.4
 opencv-python==4.9.0.80
-tensorflow==2.15.0
-protobuf==3.20.3  # Souvent nécessaire avec TensorFlow
+tensorflow==2.16.1  # Version compatible avec Python 3.12
+protobuf==3.20.3
