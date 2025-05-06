@@ -67,6 +67,7 @@ def predict(img_path):
   if visage == 0:
     predicted_label = "OTHERS"
     confidence = 1
+    return predicted_label, confidence
   else:
     model = load_model("cni_model_mobilenet.keras")
     # Charger et préparer l'image
