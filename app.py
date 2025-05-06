@@ -95,19 +95,21 @@ uploaded_file = st.file_uploader(
 
 # Affichage des résultats
 if uploaded_file is not None:
-    # Lecture de l'image
-    image = Image.open(uploaded_file)
+    # Sauvegarder l'image uploadée temporairement
+    temp_path = "temp_upload.jpg"
+    with open(temp_path, "wb") as f:
+        f.write(uploaded_file.getbuffer())
     
     # Affichage dans deux colonnes
     col1, col2 = st.columns(2)
     
     with col1:
-        st.image(image, caption="Image téléchargée", use_column_width=True)
+        st.image(uploaded_file, caption="Image téléchargée", use_column_width=True)
     
     with col2:
         with st.spinner("Analyse en cours..."):
             # Prédiction
-            predicted_class, probs = predict(image)
+            predicted_class, probs = predict(temp_path)
             
             # Affichage des résultats
             st.success("Analyse terminée !")
