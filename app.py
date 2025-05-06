@@ -114,9 +114,7 @@ if uploaded_file is not None:
             # Affichage des résultats
             st.success("Analyse terminée !")
             
-            # Jauge de confiance
-            confidence = max(probs)
-            st.metric("Confiance", f"{confidence*100:.1f}%")
+            st.metric("Confiance", f"{probs*100:.1f}%")
             
             # Résultat avec mise en forme conditionnelle
             if predicted_class == "CNI" or predicted_class == "recepisse":
