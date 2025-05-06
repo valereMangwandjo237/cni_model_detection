@@ -1,6 +1,6 @@
 streamlit==1.32.2
 Pillow==10.1.0
 numpy==1.26.4
-opencv-python==4.9.0.80
-tensorflow==2.16.1  # Version compatible avec Python 3.12
+opencv-python-headless==4.9.0.80  # Use headless version for deployments
+tensorflow==2.16.1
 protobuf==3.20.3
