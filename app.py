@@ -120,7 +120,7 @@ if uploaded_file is not None:
             # Résultat avec mise en forme conditionnelle
             if predicted_class == "CNI" or predicted_class == "recepisse":
                 st.markdown(f"<h2 style='color: #1abc9c;'>📋 {predicted_class}</h2>", unsafe_allow_html=True)
-            elif predicted_class == "Passport":
+            elif predicted_class == "passport":
                 st.markdown(f"<h2 style='color: #1abc9c;'>🛂 {predicted_class}</h2>", unsafe_allow_html=True)
             else:
                 st.markdown(f"<h2 style='color: #f39c12;'>❌ {predicted_class}</h2>", unsafe_allow_html=True)
