@@ -7,6 +7,9 @@ import time
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
 import uuid
+import easyocr
+import magic
+import io
 
 # Configuration de la page
 st.set_page_config(
@@ -89,6 +92,18 @@ def predict(img_path):
     
     return predicted_label, confidence
 
+def extraction(img_path):
+    reader = easyocr.Reader(['fr', 'en'], gpu=False)
+    # Lire l'image
+    img = Image.open(img_path)
+    img_np = np.array(img)
+
+    # Extraire le texte
+    results = reader.readtext(img_np, paragraph=True)
+    
+    # Formater les résultats
+    extracted_text = "\n".join([res[1] for res in results])
+    return extracted_text
 
 # Zone de téléchargement
 uploaded_file = st.file_uploader(
@@ -123,10 +138,11 @@ with col2:
                 st.metric("Confiance", f"{probs*100:.1f}%")
                 
                 # Résultat avec mise en forme conditionnelle
-                if predicted_class == "CNI" or predicted_class == "recepisse":
+                if predicted_class == "CNI" or predicted_class == "recepisse" or predicted_class == "passport":
                     st.markdown(f"<h2 style='color: #1abc9c;'>📋 {predicted_class}</h2>", unsafe_allow_html=True)
-                elif predicted_class == "passport":
-                    st.markdown(f"<h2 style='color: #1abc9c;'>🛂 {predicted_class}</h2>", unsafe_allow_html=True)
+                    text_cni = extraction(temp_path)
+                    with st.expander("📝 Texte extrait de la CNI"):
+                        st.text(text)
                 else:
                     st.markdown(f"<h2 style='color: #f39c12;'>❌ {predicted_class}</h2>", unsafe_allow_html=True)
                     
