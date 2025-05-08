@@ -104,45 +104,36 @@ with col1:
         st.image(uploaded_file, caption="Image téléchargée", use_column_width=True)
         
 with col2:
-    if uploaded_file:
-# Affichage des résultats
-if uploaded_file is not None:
-    with st.spinner("Analyse en cours..."):
-        try:
-            # Sauvegarder l'image uploadée temporairement avec un nom de fichier unique
-            temp_path = f"temp_upload_{uuid.uuid4().hex}.jpg"
-            with open(temp_path, "wb") as f:
-                f.write(uploaded_file.getbuffer())
+    if uploaded_file is not None:
+        with st.spinner("Analyse en cours..."):
+            try:
+                # Sauvegarder l'image uploadée temporairement avec un nom de fichier unique
+                temp_path = f"temp_upload_{uuid.uuid4().hex}.jpg"
+                with open(temp_path, "wb") as f:
+                    f.write(uploaded_file.getbuffer())
+                    
+                if not os.path.exists(temp_path):
+                    st.error("Erreur : Fichier temporaire non créé")
+                    return
+                    
+                predicted_class, probs = predict(temp_path)
                 
-            if not os.path.exists(temp_path):
-                st.error("Erreur : Fichier temporaire non créé")
-                return
+                # Affichage des résultats
+                st.success("Analyse terminée !")
+                st.metric("Confiance", f"{probs*100:.1f}%")
                 
-            predicted_class, probs = predict(temp_path)
-            
-            # Affichage des résultats
-            st.success("Analyse terminée !")
-            st.metric("Confiance", f"{probs*100:.1f}%")
-            
-            # Résultat avec mise en forme conditionnelle
-            if predicted_class == "CNI" or predicted_class == "recepisse":
-                st.markdown(f"<h2 style='color: #1abc9c;'>📋 {predicted_class}</h2>", unsafe_allow_html=True)
-            elif predicted_class == "passport":
-                st.markdown(f"<h2 style='color: #1abc9c;'>🛂 {predicted_class}</h2>", unsafe_allow_html=True)
-            else:
-                st.markdown(f"<h2 style='color: #f39c12;'>❌ {predicted_class}</h2>", unsafe_allow_html=True)
-                
-        except Exception as e:
-            st.error(f"Erreur lors de l'analyse : {str(e)}")
-        finally:
-            if 'temp_path' in locals() and os.path.exists(temp_path):
-                os.remove(temp_path)
-    
-    
-    
-    with col2:
-        
-            # Prédiction
-            predicted_class, probs = predict(temp_path)
+                # Résultat avec mise en forme conditionnelle
+                if predicted_class == "CNI" or predicted_class == "recepisse":
+                    st.markdown(f"<h2 style='color: #1abc9c;'>📋 {predicted_class}</h2>", unsafe_allow_html=True)
+                elif predicted_class == "passport":
+                    st.markdown(f"<h2 style='color: #1abc9c;'>🛂 {predicted_class}</h2>", unsafe_allow_html=True)
+                else:
+                    st.markdown(f"<h2 style='color: #f39c12;'>❌ {predicted_class}</h2>", unsafe_allow_html=True)
+                    
+            except Exception as e:
+                st.error(f"Erreur lors de l'analyse : {str(e)}")
+            finally:
+                if 'temp_path' in locals() and os.path.exists(temp_path):
+                    os.remove(temp_path)
             
             
