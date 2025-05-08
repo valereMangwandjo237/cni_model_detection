@@ -6,6 +6,7 @@ import os
 import time
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
+import uuid
 
 # Configuration de la page
 st.set_page_config(
@@ -55,7 +56,9 @@ def detection_visage(img):
       
   return response
 
-
+@st.cache_resource
+def load_model_cached():
+    return load_model("cni_model_mobilenet.keras")
 
 def predict(img_path):
   class_names =  ['new_cni', 'old_cni', 'others', 'passport', 'recepisse']
@@ -69,7 +72,7 @@ def predict(img_path):
     confidence = 1
     return predicted_label, confidence
   else:
-    model = load_model("cni_model_mobilenet.keras")
+    model = load_model_cached()
     # Charger et préparer l'image
     img_array = image.img_to_array(img) / 255.0
     img_array_expanded = np.expand_dims(img_array, axis=0)
@@ -94,27 +97,31 @@ uploaded_file = st.file_uploader(
     help="Format JPG, JPEG ou PNG"
 )
 
+col1, col2 = st.columns(2)
+
+with col1:
+    if uploaded_file:
+        st.image(uploaded_file, caption="Image téléchargée", use_column_width=True)
+        
+with col2:
+    if uploaded_file:
 # Affichage des résultats
 if uploaded_file is not None:
-    # Sauvegarder l'image uploadée temporairement
-    temp_path = "temp_upload.jpg"
-    with open(temp_path, "wb") as f:
-        f.write(uploaded_file.getbuffer())
-    
-    # Affichage dans deux colonnes
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        st.image(uploaded_file, caption="Image téléchargée", use_column_width=True)
-    
-    with col2:
-        with st.spinner("Analyse en cours..."):
-            # Prédiction
+    with st.spinner("Analyse en cours..."):
+        try:
+            # Sauvegarder l'image uploadée temporairement avec un nom de fichier unique
+            temp_path = f"temp_upload_{uuid.uuid4().hex}.jpg"
+            with open(temp_path, "wb") as f:
+                f.write(uploaded_file.getbuffer())
+                
+            if not os.path.exists(temp_path):
+                st.error("Erreur : Fichier temporaire non créé")
+                return
+                
             predicted_class, probs = predict(temp_path)
             
             # Affichage des résultats
             st.success("Analyse terminée !")
-            
             st.metric("Confiance", f"{probs*100:.1f}%")
             
             # Résultat avec mise en forme conditionnelle
@@ -124,3 +131,18 @@ if uploaded_file is not None:
                 st.markdown(f"<h2 style='color: #1abc9c;'>🛂 {predicted_class}</h2>", unsafe_allow_html=True)
             else:
                 st.markdown(f"<h2 style='color: #f39c12;'>❌ {predicted_class}</h2>", unsafe_allow_html=True)
+                
+        except Exception as e:
+            st.error(f"Erreur lors de l'analyse : {str(e)}")
+        finally:
+            if 'temp_path' in locals() and os.path.exists(temp_path):
+                os.remove(temp_path)
+    
+    
+    
+    with col2:
+        
+            # Prédiction
+            predicted_class, probs = predict(temp_path)
+            
+            
