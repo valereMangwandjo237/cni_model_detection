@@ -4,3 +4,4 @@ numpy==1.26.4
 opencv-python-headless==4.9.0.80  # Use headless version for deployments
 tensorflow==2.16.1
 protobuf==3.20.3
+uuid==1.30
