@@ -5,3 +5,7 @@ opencv-python-headless==4.9.0.80  # Use headless version for deployments
 tensorflow==2.16.1
 protobuf==3.20.3
 uuid==1.30
+python-magic==0.4.27
+easyocr==1.7.1
+torch==2.2.2
+pytesseract==0.3.10
