@@ -7,9 +7,8 @@ import time
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
 import uuid
-import easyocr
-import magic
 import io
+import pytesseract
 
 # Configuration de la page
 st.set_page_config(
@@ -92,18 +91,20 @@ def predict(img_path):
     
     return predicted_label, confidence
 
-def extraction(img_path):
-    reader = easyocr.Reader(['fr', 'en'], gpu=False)
-    # Lire l'image
-    img = Image.open(img_path)
-    img_np = np.array(img)
+def extraction_ocr(img_path, lang="fra+eng"):
 
-    # Extraire le texte
-    results = reader.readtext(img_np, paragraph=True)
+    texte = pytesseract.image_to_string(img_path, lang=lang)
     
-    # Formater les résultats
-    extracted_text = "\n".join([res[1] for res in results])
-    return extracted_text
+    nom = re.search(r"[NM][O0][MN]\s*?/\s*SURNAME\s*\n\s*(.+)", texte, re.IGNORECASE)
+    prenom = re.search(r"pr[ÉE][nm][0O][MN]S\s*(/|l'|l’)?\s*G[IL]V[FE]N\s*[NM]A[NM][EF]S?\s*\n\s*(.+)", texte, re.IGNORECASE)
+    date_naiss = re.search(r"DAT[EF]\s*D[EF]\s*[NM]AISSA[NM]C[EF]/DAT[ÉE]\s*OF\s*BIRTH\s*\n\s*(.+)", texte)
+    lieu_naiss = re.search(r"LI[EF]U\s*D[EF]\s*[NM]AISSA[NM]C[EF]/DAT[ÉE]\s*OF\s*BIRTH\s*\n\s*(.+)", texte)
+    
+    return {
+        'nom': nom.group(1) if nom else 'Non trouvé',
+        'prenom': prenom.group(2) if prenom else 'Non trouvé',
+        'texte_brut': texte
+    }
 
 # Zone de téléchargement
 uploaded_file = st.file_uploader(
@@ -140,9 +141,10 @@ with col2:
                 # Résultat avec mise en forme conditionnelle
                 if predicted_class == "CNI" or predicted_class == "recepisse" or predicted_class == "passport":
                     st.markdown(f"<h2 style='color: #1abc9c;'>📋 {predicted_class}</h2>", unsafe_allow_html=True)
-                    text_cni = extraction(uploaded_file)
+                    text_cni = extraction_ocr(uploaded_file)
                     with st.expander("📝 Texte extrait de la CNI"):
-                        st.text(text_cni)
+                        st.write(f"**Nom:** text_cni{'nom'}")
+                        st.write(f"**Prenom:** text_cni{'prenom'}")
                 else:
                     st.markdown(f"<h2 style='color: #f39c12;'>❌ {predicted_class}</h2>", unsafe_allow_html=True)
                     
