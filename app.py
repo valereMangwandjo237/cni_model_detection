@@ -114,7 +114,7 @@ with col2:
                     
                 if not os.path.exists(temp_path):
                     st.error("Erreur : Fichier temporaire non créé")
-                    return ""
+                    st.stop() 
                     
                 predicted_class, probs = predict(temp_path)
                 
