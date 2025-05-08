@@ -140,7 +140,7 @@ with col2:
                 # Résultat avec mise en forme conditionnelle
                 if predicted_class == "CNI" or predicted_class == "recepisse" or predicted_class == "passport":
                     st.markdown(f"<h2 style='color: #1abc9c;'>📋 {predicted_class}</h2>", unsafe_allow_html=True)
-                    text_cni = extraction(temp_path)
+                    text_cni = extraction(uploaded_file)
                     with st.expander("📝 Texte extrait de la CNI"):
                         st.text(text)
                 else:
