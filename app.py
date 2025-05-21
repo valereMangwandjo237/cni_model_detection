@@ -60,7 +60,7 @@ def detection_visage(img):
 
 @st.cache_resource
 def load_model_cached():
-    return load_model("cni_model_mobilenet.keras")
+    return load_model("cni_model_mobilenet_best.keras")
 
 def predict(img_path):
   class_names =  ['new_cni', 'old_cni', 'others', 'passport', 'recepisse']
