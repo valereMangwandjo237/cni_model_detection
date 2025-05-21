@@ -63,17 +63,10 @@ def load_model_cached():
     return load_model("cni_model_mobilenet_best.keras")
 
 def predict(img_path):
-  class_names =  ['new_cni', 'old_cni', 'others', 'passport', 'recepisse']
-  predicted_label = ""
-  img = image.load_img(img_path, target_size=(224, 224))
-  
-  #dectecter un visage
-  visage = detection_visage(img_path)
-  if visage == 0:
-    predicted_label = "OTHERS"
-    confidence = 1
-    return predicted_label, confidence
-  else:
+    class_names =  ['new_cni', 'old_cni', 'others', 'passport', 'recepisse']
+    predicted_label = ""
+    img = image.load_img(img_path, target_size=(224, 224))
+    
     model = load_model_cached()
     # Charger et préparer l'image
     img_array = image.img_to_array(img) / 255.0
