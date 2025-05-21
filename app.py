@@ -132,6 +132,7 @@ with col2:
                 # Affichage des résultats
                 st.success("Analyse terminée !")
                 st.metric("Confiance", f"{probs*100:.1f}%")
+                st.metric(temp_path)
                 
                 # Résultat avec mise en forme conditionnelle
                 if predicted_class == "CNI" or predicted_class == "recepisse" or predicted_class == "passport":
