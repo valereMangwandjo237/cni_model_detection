@@ -10,6 +10,7 @@ import uuid
 import io
 import pytesseract
 import shutil
+import re
 
 # Configuration de la page
 st.set_page_config(
