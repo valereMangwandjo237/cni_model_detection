@@ -9,6 +9,7 @@ from tensorflow.keras.preprocessing import image
 import uuid
 import io
 import pytesseract
+import shutil
 
 # Configuration de la page
 st.set_page_config(
