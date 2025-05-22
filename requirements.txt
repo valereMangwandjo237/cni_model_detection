@@ -7,5 +7,5 @@ uuid==1.30
 python-magic==0.4.27
 easyocr==1.7.1
 torch==2.2.2
-pytesseract==5.5.0.20241111
+pytesseract
 Pillow
