@@ -12,8 +12,6 @@ import pytesseract
 import shutil
 import re
 
-# Configuration du chemin Tesseract (nécessaire pour Streamlit Cloud)
-pytesseract.pytesseract.tesseract_cmd = '/usr/bin/tesseract'
 
 # Configuration de la page
 st.set_page_config(
@@ -25,7 +23,6 @@ st.set_page_config(
 # Titre et description
 st.title("🆔 Classification de documents d'identité")
 
-st.write(os.popen("tesseract --version").read())
 st.markdown("""
 Cette application détecte si une image est une **CNI**, un **Passeport**, un **recépissé** ou **autre chose**.
 """)
@@ -137,7 +134,6 @@ with col2:
                 # Affichage des résultats
                 st.success("Analyse terminée !")
                 st.metric("Confiance", f"{probs*100:.1f}%")
-                st.write(temp_path)
                 
                 # Résultat avec mise en forme conditionnelle
                 if predicted_class == "CNI" or predicted_class == "recepisse" or predicted_class == "passport":
