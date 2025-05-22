@@ -12,6 +12,9 @@ import pytesseract
 import shutil
 import re
 
+# Configuration du chemin Tesseract (nécessaire pour Streamlit Cloud)
+pytesseract.pytesseract.tesseract_cmd = '/usr/bin/tesseract'
+
 # Configuration de la page
 st.set_page_config(
     page_title="Classification CNI/Passeport",
