@@ -97,7 +97,7 @@ def extraction_ocr(img_path, lang="fra+eng"):
     
     return {
         'nom': nom.group(1) if nom else 'Non trouvé',
-        'prenom': prenom.group(2) if prenom else 'Non trouvé',
+        'prenom': prenom.group(1) if prenom else 'Non trouvé',
         'texte_brut': texte
     }
 
