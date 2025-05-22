@@ -138,7 +138,7 @@ with col2:
                 # Résultat avec mise en forme conditionnelle
                 if predicted_class == "CNI" or predicted_class == "recepisse" or predicted_class == "passport":
                     st.markdown(f"<h2 style='color: #1abc9c;'>📋 {predicted_class}</h2>", unsafe_allow_html=True)
-                
+                    text_cni = extraction_ocr(temp_path)
                     st.write(f"**Nom:** {text_cni['nom']}")
                     st.write(f"**Prenom:** {text_cni['prenom']}")
                     st.write(f"**Texte brut OCR:** {text_cni['texte_brut']}")
