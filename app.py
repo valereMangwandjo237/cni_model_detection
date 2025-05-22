@@ -21,6 +21,8 @@ st.set_page_config(
 
 # Titre et description
 st.title("🆔 Classification de documents d'identité")
+
+st.write(os.popen("tesseract --version").read())
 st.markdown("""
 Cette application détecte si une image est une **CNI**, un **Passeport**, un **recépissé** ou **autre chose**.
 """)
