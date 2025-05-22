@@ -1,5 +1,4 @@
 streamlit==1.32.2
-Pillow==10.1.0
 numpy==1.26.4
 opencv-python-headless==4.9.0.80  # Use headless version for deployments
 tensorflow==2.16.1
@@ -8,4 +7,5 @@ uuid==1.30
 python-magic==0.4.27
 easyocr==1.7.1
 torch==2.2.2
-pytesseract==0.3.10
+pytesseract
+Pillow
