@@ -92,8 +92,8 @@ def extraction_ocr(img_path, lang="fra+eng"):
     
     nom = re.search(r"[NM][O0][MN]\s*?/\s*SURNAME\s*\n\s*(.+)", texte, re.IGNORECASE)
     prenom = re.search(r"pr[ÉE][nm][0O][MN]S\s*(/|l'|l’)?\s*G[IL]V[FE]N\s*[NM]A[NM][EF]S?\s*\n\s*(.+)", texte, re.IGNORECASE)
-    date_naiss = re.search(r"DAT[EF]\s*D[EF]\s*[NM]AISSA[NM]C[EF]/DAT[ÉE]\s*OF\s*BIRTH\s*\n\s*(.+)", texte)
-    lieu_naiss = re.search(r"LI[EF]U\s*D[EF]\s*[NM]AISSA[NM]C[EF]/DAT[ÉE]\s*OF\s*BIRTH\s*\n\s*(.+)", texte)
+    date_naiss = re.search(r"DAT[EF]\s*D[EF]\s*[NM]AISSA[NM]C[EF]/DAT[ÉE]\s*OF\s*BIRTH\s*\n\s*(.+)", texte, re.IGNORECASE)
+    lieu_naiss = re.search(r"LI[EF]U\s*D[EF]\s*[NM]AISSA[NM]C[EF]/DAT[ÉE]\s*OF\s*BIRTH\s*\n\s*(.+)", texte, re.IGNORECASE)
     
     return {
         'nom': nom.group(1) if nom else 'Non trouvé',
@@ -132,10 +132,10 @@ with col2:
                 # Affichage des résultats
                 st.success("Analyse terminée !")
                 st.metric("Confiance", f"{probs*100:.1f}%")
-                st.metric(temp_path)
+                st.write(temp_path)
                 
                 # Résultat avec mise en forme conditionnelle
-                if predicted_class == "CNI" or predicted_class == "recepisse" or predicted_class == "passport":
+               ''' if predicted_class == "CNI" or predicted_class == "recepisse" or predicted_class == "passport":
                     st.markdown(f"<h2 style='color: #1abc9c;'>📋 {predicted_class}</h2>", unsafe_allow_html=True)
                     text_cni = extraction_ocr(temp_path)
                     with st.expander("📝 Texte extrait de la CNI"):
@@ -144,6 +144,7 @@ with col2:
                         st.write(f"**Texte brut OCR:** {text_cni['texte_brut']}")
                 else:
                     st.markdown(f"<h2 style='color: #f39c12;'>❌ {predicted_class}</h2>", unsafe_allow_html=True)
+                    ''' 
                     
             except Exception as e:
                 st.error(f"Erreur lors de l'analyse : {str(e)}")
