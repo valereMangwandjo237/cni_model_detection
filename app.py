@@ -88,8 +88,13 @@ def predict(img_path):
     
     return predicted_label, confidence
 
-def extraction_ocr(img_path, lang="fra+eng"):
+def zoom_image(image_path, scale_factor=2.0):
+    img = Image.open(image_path)
+    width, height = img.size
+    resized_img = img.resize((int(width * scale_factor), int(height * scale_factor)), Image.LANCZOS)
+    return resized_img
 
+def extraction_ocr(img_path, lang="fra+eng"):
     texte = pytesseract.image_to_string(img_path, lang=lang)
     
     nom = re.search(r"NOM\s*/\s*SURNAME\s*\n\s*(.+)", texte, re.IGNORECASE)
@@ -98,8 +103,8 @@ def extraction_ocr(img_path, lang="fra+eng"):
     lieu_naiss = re.search(r"LI[EF]U\s*D[EF]\s*[NM]AISSA[NM]C[EF]/DAT[ÉE]\s*OF\s*BIRTH\s*\n\s*(.+)", texte, re.IGNORECASE)
     
     return {
-        'nom': nom.group(1) if nom else 'Non trouvé',
-        'prenom': prenom.group(1) if prenom else 'Non trouvé',
+        'nom': nom.group(1) if nom else "",
+        'prenom': prenom.group(1) if prenom else "",
         'texte_brut': texte
     }
 
@@ -138,7 +143,14 @@ with col2:
                 # Résultat avec mise en forme conditionnelle
                 if predicted_class == "CNI" or predicted_class == "recepisse" or predicted_class == "passport":
                     st.markdown(f"<h2 style='color: #1abc9c;'>📋 {predicted_class}</h2>", unsafe_allow_html=True)
-                    text_cni = extraction_ocr(temp_path)
+                    
+                    # Agrandir la photo et prendre le meilleur agrandissement
+                    for i in np.arange(1, 2.1, 0.1): 
+                        img = zoom_image(temp_path, scale_factor=i)
+                        text_cni = extraction_ocr(temp_path)
+                        if(text_cni['nom']!="" and text_cni['prenom']!=""):
+                            break
+                    
                     st.write(f"**Nom:** {text_cni['nom']}")
                     st.write(f"**Prenom:** {text_cni['prenom']}")
                     st.write(f"**Texte brut OCR:** {text_cni['texte_brut']}")
