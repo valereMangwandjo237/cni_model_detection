@@ -150,7 +150,7 @@ with col2:
                         #text_cni = extraction_ocr(img)
                         #if(text_cni['nom']!="" and text_cni['prenom']!=""):
                           #  break
-                    img = zoom_image(temp_path, scale_factor=1.3)
+                    img = zoom_image(temp_path, scale_factor=1.5)
                     text_cni = extraction_ocr(img)
                     st.write(f"**Nom:** {text_cni['nom']}")
                     st.write(f"**Prenom:** {text_cni['prenom']}")
