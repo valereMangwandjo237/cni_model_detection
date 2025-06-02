@@ -97,7 +97,7 @@ def zoom_image(image_path, scale_factor=2.0):
 def extraction_ocr(img_path, lang="fra+eng"):
     texte = pytesseract.image_to_string(img_path, lang=lang)
     
-    nom = re.search(r"NOM\s*/\s*SURNAME\s*\n\s*(.+)", texte, re.IGNORECASE)
+    nom = re.search(r"[MN]O[MN]\s*/\s*SUR[MN]A[MN]E\s*\n\s*(.+)", texte, re.IGNORECASE)
     prenom = re.search(r"PR[ÉE][NM][0O][MN]S\s*/\s*G[IL]V[FE]N\s*[NM]A[NM][EF]S[.]?[.\s]*\n\s*(.+)", texte, re.IGNORECASE)
     date_naiss = re.search(r"DAT[EF]\s*D[EF]\s*[NM]AISSA[NM]C[EF]/DAT[ÉE]\s*OF\s*BIRTH\s*\n\s*(.+)", texte, re.IGNORECASE)
     lieu_naiss = re.search(r"LI[EF]U\s*D[EF]\s*[NM]AISSA[NM]C[EF]/DAT[ÉE]\s*OF\s*BIRTH\s*\n\s*(.+)", texte, re.IGNORECASE)
