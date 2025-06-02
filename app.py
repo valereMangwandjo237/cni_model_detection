@@ -145,9 +145,9 @@ with col2:
                     st.markdown(f"<h2 style='color: #1abc9c;'>📋 {predicted_class}</h2>", unsafe_allow_html=True)
                     
                     # Agrandir la photo et prendre le meilleur agrandissement
-                    for i in np.arange(1, 2.1, 0.1): 
+                    for i in np.arange(1, 3.1, 0.1): 
                         img = zoom_image(temp_path, scale_factor=i)
-                        text_cni = extraction_ocr(temp_path)
+                        text_cni = extraction_ocr(img)
                         if(text_cni['nom']!="" and text_cni['prenom']!=""):
                             break
                     
